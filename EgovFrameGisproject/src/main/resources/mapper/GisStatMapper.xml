@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gis.mapper.GisStatMapper">
+
+    <select id="findCarNum" resultType="com.gis.dto.OnlyCarNumDto">
+        select DISTINCT car_num from local_db
+    </select>
+
+    <select id="findLocalDb" resultType="com.gis.dto.CarAndDateDto">
+        select car_num, date from local_db
+    </select>
+
+    <select id="findRatio" resultType="Double">
+        select SUM(CASE WHEN is_done = TRUE THEN 1 ELSE 0 END) / (COUNT(is_done)::FLOAT) * 100 AS result FROM local_db
+        where extract(year from date) = #{selectedYear}
+          AND extract(month from date) = #{selectedMonth}
+          AND car_num = #{selectedCarNum};
+    </select>
+
+    <select id="findNoCleanDistance" parameterType="map" resultType="com.gis.dto.StatDto">
+        WITH AllDays AS (
+            SELECT generate_series(1, 31) AS day_of_month
+        ),
+             FilteredCoordinates AS (
+                 SELECT
+                     *,
+                     LAG(geom) OVER (PARTITION BY date ORDER BY time) AS prev_geom,
+                         EXTRACT(day FROM date) AS day
+        FROM local_db
+            JOIN AllDays ON AllDays.day_of_month = EXTRACT(day FROM date)
+        WHERE extract(year FROM date) = #{selectedYear}
+          AND extract(month FROM date) = #{selectedMonth}
+          AND car_num = #{selectedCarNum}
+          AND is_done = false
+            ),
+            Distances AS (
+        SELECT
+            day_of_month,
+            COALESCE(ST_Distance(ST_SetSRID(prev_geom, 4326)::geography, ST_SetSRID(geom, 4326)::geography), 0) AS distance
+        FROM FilteredCoordinates
+            )
+        SELECT ad.day_of_month, COALESCE(SUM(COALESCE(distance, 0)), 0) AS no_clean_distance
+        FROM AllDays ad
+                 LEFT JOIN Distances d ON ad.day_of_month = d.day_of_month
+        GROUP BY ad.day_of_month
+        ORDER BY ad.day_of_month;
+    </select>
+
+    <select id="findCleanTime" parameterType="map" resultType="com.gis.dto.StatDto">
+        SELECT
+            gs.num AS day,
+		    (SELECT time FROM local_db
+		     WHERE extract(year FROM date) = #{selectedYear}
+                AND extract(month FROM date) = #{selectedMonth}
+                AND car_num = #{selectedCarNum}
+                AND extract(day FROM date) = gs.num
+                ORDER BY time DESC
+                LIMIT 1)
+                -
+                (SELECT time FROM local_db
+                WHERE extract(year FROM date) = #{selectedYear}
+                AND extract(month FROM date) = #{selectedMonth}
+                AND car_num = #{selectedCarNum}
+                AND extract(day FROM date) = gs.num
+                ORDER BY time
+                LIMIT 1)
+                AS driveTime
+        FROM generate_series(1, 31) gs(num);
+    </select>
+
+
+    <select id="findTotalDistance" parameterType="map" resultType="com.gis.dto.StatDto">
+        SELECT gs.num AS day,
+		    (SELECT trunc((st_length(st_makeline(geom ORDER BY time), true)::numeric) , 2)
+		     FROM local_db
+		     WHERE extract(year from date) = ${selectedYear}
+                AND extract(month from date) = ${selectedMonth}
+                AND extract(day from date) = gs.num
+                AND car_num = '${selectedCarNum}') AS totalDistance
+        FROM generate_series(1, 31) gs(num);
+    </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:차량 선택;
+:AJAX 요청;
+:FindDateList() : 운행 날짜 표시 ;
+:날짜 선택;
+split
+    :CleanLineLayer()
+    선 레이어 초기화;
+    :AddLineLayer()
+    선택한 날짜 선 레이어 추가;
+split again
+    :CleanPointLayer()
+    점 레이어 초기화;
+    :AddPointLayer()
+    선택한 날짜 점 레이어 추가;
+split again
+    :CleanRouteLayer()
+    경로 레이어 초기화;
+    :AddRouteLayer()
+    선택한 날짜 경로 레이어 추가;
+split again
+    :FindCleanInfo()
+    운행정보 표시;
+end split
+:view;
+stop;
+
+@enduml

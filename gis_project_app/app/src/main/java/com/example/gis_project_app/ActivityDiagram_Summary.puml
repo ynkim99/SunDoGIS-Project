@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:어플 시작;
+:화면 로딩 시 처리;
+while (START 버튼 클릭)
+    :센서 측정 준비를 위한 처리;
+    :센서 측정 및 전송 반복 처리;
+    split
+    :PAUSE 버튼 클릭 시 처리;
+    split again
+    :STOP 버튼 클릭 시 처리;
+    end split
+    :센서 측정 중단 처리;
+endwhile
+:어플 종료;
+stop
+
+@enduml

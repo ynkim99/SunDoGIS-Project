@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gis.mapper.GisLiveMapper">
+
+    <!-- 날짜를 기준 Temp_Gps에서 gps 가져오기 -->
+    <select id="findLiveGpsByTempGps" resultType="com.gis.vo.Gps">
+        select * from temp.temp_gps where date = #{date} order by time desc limit 1
+    </select>
+
+    <!-- 날짜를 기준으로 local_db에서 경로 가져오기 -->
+    <select id="findLocalDbOnToday" resultType="com.gis.dto.LocalDto">
+        select * from local_db where date = #{date}
+    </select>
+</mapper>

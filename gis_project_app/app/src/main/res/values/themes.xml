@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Gis_project_app" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yongin_blue</item>
+        <item name="colorPrimaryVariant">@color/yongin_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/yongin_green</item>
+        <item name="colorSecondaryVariant">@color/yongin_orange</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Remove status bar -->
+<!--        <item name="android:windowFullscreen">true</item>-->
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

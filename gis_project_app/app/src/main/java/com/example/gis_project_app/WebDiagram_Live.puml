@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:LIVE 버튼;
+:TEMP_GPS DB의 가장 최근 값 가져오기;
+
+card 특정 주기마다 TEMP_GPS 값 전송 {
+    repeat :Sceduling 시작
+      :차량 이름 Table 생성;
+      split
+      :지도에 실시간 위치 표시;
+      split again
+      :지도에 선 레이어 표시;
+      split end
+      :view;
+      backward : Sceduling 반복;
+    repeat while ()
+    }
+:LIVE 중지;
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:웹 시작;
+fork
+    :차량 번호 선택;
+    :날짜 선택;
+    split
+    :지도에 운행 경로, 청소 정보 표시;
+    split again
+    :CSV 파일 다운로드;
+    split end
+fork again
+    :LIVE 버튼;
+    :지도에 실시간 운행 경로, 청소 정보 표시;
+fork again
+    :통계 버튼;
+    :차량의 월 별 통계 자료;
+fork again
+    :CSV 파일 추가;
+end fork
+stop
+
+@enduml

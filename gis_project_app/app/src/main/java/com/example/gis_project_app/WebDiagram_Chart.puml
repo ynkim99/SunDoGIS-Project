@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+    :통계 버튼;
+    :차량, 년, 월 선택;
+    :조회 버튼;
+    :AJAX 요청;
+split
+    :findRatio();
+    :청소 비율 반환;
+split again
+    :findClenTime();
+    :운행 시간 반환;
+split again
+    fork
+        :findTotal();
+        :운행 거리 반환;
+    fork again
+        :findNoCleanDistance();
+        :청소 하지 않은 거리 반환;
+    end fork
+split end
+:AJAX 반환;
+:view;
+stop
+@enduml

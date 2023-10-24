@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:어플 시작;
+:MainActivity.java 실행;
+:onCreate(){
+    setContentView(R.layout.activity_main)
+    ...]
+split
+:변수 초기화;
+:지도 로드;
+:권한 요청/확인;
+:버튼 이벤트 등록;
+:주기적인 위치 업데이트 시작;
+split again
+:로딩 화면 시작;
+:introDialog.show()]
+:onMapReady(){
+    ...
+    introDialog.dismiss()]
+:로딩 화면 종료;
+end split
+:화면 로딩 완료;
+:...;
+
+@enduml

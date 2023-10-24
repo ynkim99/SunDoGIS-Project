@@ -1,0 +1,41 @@
+@startgantt
+'https://plantuml.com/gantt-diagram
+
+'[Prototype design] lasts 13 days and is colored in Lavender/LightBlue
+'[Test prototype] lasts 9 days and is colored in Coral/Green and starts 3 days after [Prototype design]'s end
+'[Write tests] lasts 5 days and ends at [Prototype design]'s end
+'[Hire tests writers] lasts 6 days and ends at [Write tests]'s start
+'[Init and write tests report] is colored in Coral/Green
+'[Init and write tests report] starts 1 day before [Test prototype]'s start and ends at [Test prototype]'s end
+'Project starts 2020-07-01
+'[Prototype design] starts 2020-07-01
+'[Test prototype] starts 2020-07-16
+
+Project starts 2023-09-22
+[프로그램 설치 및 필요 기술 기초 학습] starts 2023-09-22
+[프로그램 설치 및 필요 기술 기초 학습] lasts 5 days
+[DB 설계] starts 2023-09-23
+[DB 설계] lasts 4 days
+[화면 설계] starts 2023-09-25
+[화면 설계] lasts 3 days
+[프로젝트 환경 설정] starts 2023-09-26
+[프로젝트 환경 설정] lasts 9 days
+[기초 뷰 구현] starts 2023-09-27
+[기초 뷰 구현] lasts 8 days
+[앱 개발] starts 2023-09-27
+[앱 개발] lasts 15 days
+[지도 경로 레이어 구현] starts 2023-09-27
+[지도 경로 레이어 구현] lasts 17 days
+[통계 데이터 출력 처리] starts 2023-09-27
+[통계 데이터 출력 처리] lasts 17 days
+[csv를 통한 데이터 등록 구현] starts 2023-10-10
+[csv를 통한 데이터 등록 구현] lasts 4 days
+'프로젝트 시작일 9/22
+'첫회의 9/25
+'DB설계 9/22~9/27
+'화면설계 9/22~9/27
+'환경설정 9/26~10/4
+'앱개발 9/26~10/11
+'프론트엔드 ~10/4
+
+@endgantt

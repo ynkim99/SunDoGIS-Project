@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- #### http 전송을 허용할 도메인 목록 ####-->
+        <domain includeSubdomains="true">
+            <!-- 도메인 이름만 입력해주세요
+            (ex: http://111.22.33.44:1234/qwer/asdf -> 111.22.33.44)
+            -->
+            172.30.1.73
+        </domain>
+    </domain-config>
+</network-security-config>

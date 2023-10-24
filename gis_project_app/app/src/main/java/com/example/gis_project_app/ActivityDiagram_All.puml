@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:어플 시작;
+:MainActivity.java 실행;
+card 화면 로딩 {
+:onCreate(){
+     setContentView(R.layout.activity_main)
+     ...]
+split
+:변수 초기화;
+:지도 로드;
+:권한 요청/확인;
+:버튼 이벤트 등록;
+:주기적인 위치 업데이트 시작;
+split again
+:로딩 화면 시작;
+:introDialog.show()]
+:onMapReady(){
+    ...
+    introDialog.dismiss()]
+:로딩 화면 종료;
+end split
+:화면 로딩 완료;
+}
+while (START 버튼 클릭)
+    card 센서 데이터 측정 준비 {
+    if (일시 정지를 누른 상태인가?) is (yes) then
+    else (no)
+      :입력창(dialog)으로 차량정보를 받음;
+      :기존에 있던 선과 마커 제거;
+    endif
+    :startRecord()
+    startRPMMeasurement()
+    showNotification("측정 중...")]
+    }
+
+    card 센서 데이터 측정 및 전송 반복 {
+    repeat :TimerTask 시작
+      split
+      :getLastLocation()]
+      :moveMap()
+      drawPath()
+      drawCurrentMarker()]
+      split again
+      :getDecibel()]
+      split again
+      :getRpm()]
+      end split
+      :sendJsonData()]
+      backward : TimerTask 반복;
+    repeat while ()
+    }
+    split
+    :PAUSE 버튼 클릭;
+    :showNotification("측정이 일시정지 되었습니다.")]
+    split again
+    :STOP 버튼 클릭;
+    :showNotification("측정이 종료되었습니다.")
+    sendStopRequest()]
+    end split
+
+    card 센서 데이터 측정 중단 {
+    :cancelTiemrTask()
+    stopRecode()
+    stopRPMMeasurement()]
+    }
+endwhile
+:어플 종료;
+stop
+
+@enduml

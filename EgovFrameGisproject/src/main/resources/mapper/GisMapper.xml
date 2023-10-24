@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gis.mapper.GisMapper">
+
+<!--    Dto를 Temp Table에 저장     -->
+
+    <insert id="saveGpsOnTempGps" parameterType="com.gis.dto.GpsDto">
+        insert into temp.temp_gps (car_num, date, time, lon, lat)
+        values (#{carNum}, #{date}::date, #{time}::time, #{lon}, #{lat})
+    </insert>
+
+    <insert id="saveNoiseOnTempNoise" parameterType="com.gis.dto.NoiseDto">
+        insert into temp.temp_noise (car_num, date, time, noise)
+        values (#{carNum}, #{date}::date, #{time}::time, #{noise})
+    </insert>
+
+    <insert id="saveFrequencyOnFrequency" parameterType="com.gis.dto.FrequencyDto">
+        insert into temp.temp_frequency (car_num, date, time, frequency)
+        values (#{carNum}, #{date}::date, #{time}::time, #{frequency})
+    </insert>
+
+    <!--    Temp Table Data 삭제     -->
+
+    <delete id="deleteAllTempGps">
+        delete from temp.temp_gps
+    </delete>
+
+    <delete id="deleteAllTempNoise">
+        delete from temp.temp_noise
+    </delete>
+
+    <delete id="deleteAllTempFrequency">
+        delete from temp.temp_frequency
+    </delete>
+
+    <!--local_db에서 차량번호 추출    -->
+
+    <select id="findCarNumList" resultType="java.lang.String">
+        select distinct(car_num) as car_num from local_db;
+    </select>
+
+    <!--차량번호에 따른 dateList 추출    -->
+
+    <select id="findDateListByCarNum" resultType="java.lang.String">
+        select date from local_db where car_num = #{carNum} group by date;
+    </select>
+
+    <!--차량번호와 날짜에 따른 localDto    -->
+
+    <select id="findLocalDbByCarNumAndDate" resultType="com.gis.dto.LocalDto">
+        select * from local_db where car_num = #{carNum} and date = #{date}::date order by time;
+    </select>
+
+    <!--    Temp Table에서 VO로 전달     -->
+
+    <select id="findCarNumByGpsTable" resultType="java.lang.String">
+        select distinct(car_num) from temp.temp_gps
+    </select>
+
+    <select id="findGpsByCarNum" resultType="com.gis.vo.Gps">
+        select * from temp.temp_gps where car_num = #{carNum} order by date,time desc limit 1;
+    </select>
+
+    <select id="findNoiseByCarNum" resultType="com.gis.vo.Noise">
+        select * from temp.temp_noise where car_num = #{carNum} order by date,time desc limit 1;
+    </select>
+
+    <select id="findFrequencyByCarNum" resultType="com.gis.vo.Frequency">
+        select * from temp.temp_frequency where car_num = #{carNum} order by date,time desc limit 1;
+    </select>
+
+    <!-- localDto -> local_db table에 저장   -->
+
+    <insert id="saveSensorData">
+        insert into local_db (car_num, date, time, noise, frequency, lon, lat, geom, is_done)
+        values (
+                #{carNum}, #{date}::date, #{time}::time, #{noise}, #{frequency}, #{lon}, #{lat},
+                ST_SetSRID(ST_MakePoint(CAST(#{lon} AS DOUBLE PRECISION), CAST(#{lat} AS DOUBLE PRECISION)), 4326),
+                #{isDone}
+                )
+    </insert>
+
+    <!--Temp Table 센서별 전체 List 가져오기    -->
+
+    <select id="findAllGpsByCarNum" resultType="com.gis.vo.Gps">
+        select * from temp.temp_gps where car_num = #{carNum} order by date,time
+    </select>
+    <select id="findAllNoiseByCarNum" resultType="com.gis.vo.Noise">
+        select * from temp.temp_noise where car_num = #{carNum} order by date,time
+    </select>
+    <select id="findAllFrequencyByCarNum" resultType="com.gis.vo.Frequency">
+        select * from temp.temp_frequency where car_num = #{carNum} order by date,time
+    </select>
+
+    <!--  차량 운행 시간   -->
+
+    <select id="findDriveTimeByCarNumAndDate" parameterType="map" resultType="java.lang.String">
+        select
+            (select time from local_db
+                         where date = #{date}::date and car_num = #{carNum}
+                         order by time desc limit 1)
+                         -
+            (select time from local_db
+                         where date = #{date}::date and car_num = #{carNum}
+                         order by time limit 1)
+                         as driveTime
+    </select>
+
+    <!-- 청소경로 중심점 구하기   -->
+
+    <select id="findCenterPoint" resultType="com.gis.dto.CenterPointDto">
+        select
+            ST_X(st_centroid(st_makeline(geom order by time))) as centroid_x,
+            ST_Y(st_centroid(st_makeline(geom order by time))) as centroid_y
+        from local_db
+        where car_num = #{carNum} and date = #{date}::date
+        group by date;
+    </select>
+
+
+    <!--청소여부(boolean) List 구하기    -->
+
+    <select id="findAllIsDone" resultType="java.lang.Boolean">
+        select is_done from local_db where car_num = #{carNum} and date = #{date}::date
+    </select>
+
+    <!--점과 점사이의 거리 구하기  -->
+
+    <select id="findPointToPointLength" resultType="float">
+        select trunc(ST_DistanceSphere(
+                             ST_SetSRID(ST_MakePoint(CAST(#{x1} AS DOUBLE PRECISION), CAST(#{y1} AS DOUBLE PRECISION)), 4326),
+                             ST_SetSRID(ST_MakePoint(CAST(#{x2} AS DOUBLE PRECISION), CAST(#{y2} AS DOUBLE PRECISION)), 4326)
+                         )::numeric, 2) as length;
+    </select>
+
+    <!--  총 운행거리  -->
+
+    <select id="findDriveDistance" resultType="float">
+        SELECT  trunc((st_length(st_makeline(geom ORDER BY time), true)::numeric) , 2) as length
+        FROM local_db where car_num = #{carNum} and date = #{date}::date
+        GROUP BY date;
+    </select>
+
+    <!-- 청소한 라인만 저장하기 -->
+    <select id="saveCleanLine">
+        insert into clean_route (car_num, date, geom)
+            values(#{carNum}, #{date}::date, st_makeLine(st_asText(#{prevPointGeom}), st_asText(#{curPointGeom})))
+    </select>
+
+</mapper>

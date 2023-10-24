@@ -1,0 +1,212 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.gis_project_app.MainActivity",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1871292407 { 
+   	label=gis_project_app
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   CsvFile417551004[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CsvFile</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   filePath: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ readAllCsvData(fileName: String): List&lt;String[]&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readCsvData(fileName: String): List&lt;String[]&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeAllData(fileName: String, dataList: List&lt;String[]&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeData(fileName: String, dataList: List&lt;String[]&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+IntroDialog417551004[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)IntroDialog</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dialogView: View [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   layoutResId: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onResume()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MainActivity417551004[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MainActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   accelerometer: Sensor [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   amplitude: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   backPressedCallback: OnBackPressedCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   carNum: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   csvFile: CsvFile [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   csvFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   endLatLng: LatLng [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   filePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   introDialog: IntroDialog [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isRecording: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mCurrentLocation: Location [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mCurrentMarker: Marker [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   mGoogleApiClient: GoogleApiClient [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mLat: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mLng: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mLocationCallback: LocationCallback [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   mLocationRequest: LocationRequest [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mMap: GoogleMap [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mStartMarker: Marker [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mUi: UiSettings [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pauseBtn: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   polylines: List&lt;Polyline&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   previousAcceleration: float[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   previousTimeMillis: long [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   providerClient: FusedLocationProviderClient [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queue: RequestQueue [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   recorder: MediaRecorder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rpm: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sensorManager: SensorManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startBtn: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startLatLng: LatLng [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stopBtn: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   timerCall: Timer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   timerTask: TimerTask [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   viewDialog: View [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- cancelTimerTask()</TD></TR>
+<TR><TD ALIGN="LEFT" >- createLocationRequest()</TD></TR>
+<TR><TD ALIGN="LEFT" >- drawCurrentMarker()</TD></TR>
+<TR><TD ALIGN="LEFT" >- drawPath()</TD></TR>
+<TR><TD ALIGN="LEFT" >- drawStartMarker()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getDecibel()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getLastLocation()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getRpm()</TD></TR>
+<TR><TD ALIGN="LEFT" >- moveMap(latitude: double, longitude: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onAccuracyChanged(sensor: Sensor, i: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onConnected(bundle: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onConnectionFailed(connectionResult: ConnectionResult)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onConnectionSuspended(i: int)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreate(savedInstanceState: Bundle)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onLocationChanged(location: Location)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onMapReady(googleMap: GoogleMap)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onSensorChanged(event: SensorEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >- removePolylinesAndMarkers()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ sendJsonData(url: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendStopRequest()</TD></TR>
+<TR><TD ALIGN="LEFT" >- showNotification(message: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- startRPMMeasurement()</TD></TR>
+<TR><TD ALIGN="LEFT" >- startRecord()</TD></TR>
+<TR><TD ALIGN="LEFT" >- stopRPMMeasurement()</TD></TR>
+<TR><TD ALIGN="LEFT" >- stopRecord()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+MainActivity417551004 -> CsvFile417551004[label="csvFile
+[0..1]"];
+MainActivity417551004 -> IntroDialog417551004[label="introDialog
+[0..1]"];
+    
+}
+@enduml
